@@ -1,49 +1,47 @@
 package semester3.webtech.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import semester3.webtech.model.Produkt;
+import semester3.webtech.persistence.ProduktRepository;
 
 import java.util.*;
 
 @Service
 public class ProduktService {
-
-    private final ArrayList<Produkt> produkte = new ArrayList<>(List.of(
-            new Produkt(1, "Jasmine Reis 3A", 10, 50, 500, 0, Produkt.Kategorie.REIS),
-            new Produkt(2, "Samyang Nudeln", 12, 30, 360, 0, Produkt.Kategorie.NUDELN)
-    ));
-    private int nextId = 3;
+    @Autowired
+    private ProduktRepository produktRepository;
 
     // Alle Produkte abrufen
-    public ArrayList<Produkt> getAllProdukte() {
-        return produkte;
+    public List<Produkt> getAllProdukte() {  // Änderung von Iterable zu List
+        return (List<Produkt>) produktRepository.findAll();
     }
 
     // Produkt hinzufügen
     public Produkt addProdukt(Produkt produkt) {
-        produkt.setId(nextId++);
-        produkt.setTotalValue(produkt.getPrice() * produkt.getQuantity()); // Gesamtwert berechnen
-        produkte.add(produkt); // Produkt zur Liste hinzufügen
-        return produkt;
+        produkt.setTotalValue(produkt.getPrice() * produkt.getQuantity());
+        return produktRepository.save(produkt);  // Speichern in der Datenbank
     }
 
     // Produkt löschen
     public boolean deleteProdukt(int id) {
-        return produkte.removeIf(produkt -> produkt.getId() == id);
+        if (produktRepository.existsById(id)) {
+            produktRepository.deleteById(id);
+            return true;
+        }
+        return false;
     }
 
     // Warenausgang buchen
     public Optional<Produkt> bookExit(int id, int quantityToExit) {
-        Produkt produkt = produkte.stream()
-                .filter(p -> p.getId() == id)
-                .findFirst()
-                .orElse(null);
-
-        if (produkt != null && quantityToExit > 0 && produkt.getQuantity() >= quantityToExit) {
-            produkt.setQuantity(produkt.getQuantity() - quantityToExit);
-            produkt.setTotalValue(produkt.getPrice() * produkt.getQuantity()); // Gesamtwert aktualisieren
-            return Optional.of(produkt);
-        }
-        return Optional.empty();
+        return produktRepository.findById(id)
+                .map(produkt -> {
+                    if (quantityToExit > 0 && produkt.getQuantity() >= quantityToExit) {
+                        produkt.setQuantity(produkt.getQuantity() - quantityToExit);
+                        produkt.setTotalValue(produkt.getPrice() * produkt.getQuantity());
+                        return produktRepository.save(produkt);
+                    }
+                    return null;
+                });
     }
 }

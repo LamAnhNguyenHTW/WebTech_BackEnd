@@ -1,17 +1,17 @@
 package semester3.webtech.controller;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import semester3.webtech.model.Produkt;
 import semester3.webtech.service.ProduktService;
 
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
-import java.util.List;
 
-@RestController
+@Controller
 @RequestMapping("/api/produkte")
 public class ProduktController {
 
@@ -23,7 +23,8 @@ public class ProduktController {
 
     @GetMapping
     public ResponseEntity<List<Produkt>> getAllProdukte() {
-        return ResponseEntity.ok(produktService.getAllProdukte());
+        List<Produkt> produkte = produktService.getAllProdukte();
+        return ResponseEntity.ok(produkte);
     }
 
     @PostMapping
