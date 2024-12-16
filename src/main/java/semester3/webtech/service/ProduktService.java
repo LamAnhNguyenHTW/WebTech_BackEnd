@@ -8,33 +8,37 @@ import java.util.*;
 @Service
 public class ProduktService {
 
-    private final Map<Integer, Produkt> produkte = new HashMap<>(Map.of(
-            1, new Produkt(1, "Jasmine Reis 3A", 10, 50, 500, 0, Produkt.Kategorie.REIS),
-            2, new Produkt(2, "Samyang Nudeln", 12, 30, 360, 0, Produkt.Kategorie.NUDELN)
+    private final ArrayList<Produkt> produkte = new ArrayList<>(List.of(
+            new Produkt(1, "Jasmine Reis 3A", 10, 50, 500, 0, Produkt.Kategorie.REIS),
+            new Produkt(2, "Samyang Nudeln", 12, 30, 360, 0, Produkt.Kategorie.NUDELN)
     ));
     private int nextId = 3;
 
     // Alle Produkte abrufen
-    public List<Produkt> getAllProdukte() {
-        return new ArrayList<>(produkte.values());
+    public ArrayList<Produkt> getAllProdukte() {
+        return produkte;
     }
 
     // Produkt hinzufügen
     public Produkt addProdukt(Produkt produkt) {
         produkt.setId(nextId++);
         produkt.setTotalValue(produkt.getPrice() * produkt.getQuantity()); // Gesamtwert berechnen
-        produkte.put(produkt.getId(), produkt);
+        produkte.add(produkt); // Produkt zur Liste hinzufügen
         return produkt;
     }
 
     // Produkt löschen
     public boolean deleteProdukt(int id) {
-        return produkte.remove(id) != null;
+        return produkte.removeIf(produkt -> produkt.getId() == id);
     }
 
     // Warenausgang buchen
     public Optional<Produkt> bookExit(int id, int quantityToExit) {
-        Produkt produkt = produkte.get(id);
+        Produkt produkt = produkte.stream()
+                .filter(p -> p.getId() == id)
+                .findFirst()
+                .orElse(null);
+
         if (produkt != null && quantityToExit > 0 && produkt.getQuantity() >= quantityToExit) {
             produkt.setQuantity(produkt.getQuantity() - quantityToExit);
             produkt.setTotalValue(produkt.getPrice() * produkt.getQuantity()); // Gesamtwert aktualisieren
