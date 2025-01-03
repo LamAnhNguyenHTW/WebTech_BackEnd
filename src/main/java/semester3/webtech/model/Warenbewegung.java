@@ -29,6 +29,7 @@ public class Warenbewegung {
     @ManyToOne
     private Kunde kunde;  // Für Warenausgang
 
+
     @JsonGetter("lieferantName") // Serialisieren von Lieferantname
     public String getLieferantName() {
         return lieferant != null ? lieferant.getName() : null;

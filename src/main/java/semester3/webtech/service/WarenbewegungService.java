@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 import semester3.webtech.model.Warenbewegung;
 import semester3.webtech.persistence.WarenbewegungRepository;
 
-
 import java.util.List;
 
 @Service
@@ -13,8 +12,6 @@ public class WarenbewegungService {
 
     @Autowired
     private WarenbewegungRepository repository;
-    @Autowired
-    private WarenbewegungRepository warenbewegungRepository;
 
     // Alle Warenbewegungen abrufen
     public List<Warenbewegung> getAllWarenbewegungen() {
@@ -26,9 +23,10 @@ public class WarenbewegungService {
         return repository.save(warenbewegung);
     }
 
+    // Warenbewegung löschen
     public boolean deleteWarenbewegung(long id) {
-        if (warenbewegungRepository.existsById(id)) {
-            warenbewegungRepository.deleteById(id);
+        if (repository.existsById(id)) {
+            repository.deleteById(id);
             return true;
         }
         return false;

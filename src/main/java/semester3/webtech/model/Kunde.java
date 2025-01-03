@@ -24,5 +24,10 @@ public class Kunde {
     private String adresse;
     private String telefon;
     private String email;
+
+    public Kunde(long l, String kundeA) {
+        this.id = l;
+        this.name = kundeA;
+    }
 //    private int rating;
 }

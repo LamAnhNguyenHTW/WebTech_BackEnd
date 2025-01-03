@@ -38,6 +38,14 @@ public class Produkt {
 
     private Kategorie kategorie;
 
+    public Produkt(int i, String produktA, int i1, double v) {
+        this.id = i;
+        this.name = produktA;
+        this.price = v;
+        this.id = i1;
+        this.quantity = v;
+    }
+
     // Enum für Produktkategorien
     public enum Kategorie {
         NUDELN, REIS, GETRAENKE

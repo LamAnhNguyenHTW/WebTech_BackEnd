@@ -25,4 +25,21 @@ public class Lieferant {
     private String phone;
     private String email;
     private int rating;
+
+    public Lieferant(long l, String lieferantA, String s, String number, String mail) {
+        this.id = l;
+        this.name = lieferantA;
+        this.address = s;
+        this.phone = number;
+        this.email = mail;
+        this.rating = 0;
+    }
+
+    public Lieferant(Long o, String lieferantA, String s, String number, String mail) {
+    }
+
+    public Lieferant(long l, String lieferantA) {
+        this.id = l;
+        this.name = lieferantA;
+    }
 }
