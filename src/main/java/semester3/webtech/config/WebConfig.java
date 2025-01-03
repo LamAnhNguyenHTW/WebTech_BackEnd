@@ -13,7 +13,7 @@ public class WebConfig implements WebMvcConfigurer {
                 .addMapping("/**")
                 .allowedMethods("*")
                 .allowedOrigins(
-                        "http://localhost:5181",
+                        "http://localhost:5180",
                         "https://webtech-frontend-qfu2.onrender.com"
                 );
     }
