@@ -16,6 +16,8 @@ jobs:
         with: 
           distribution: 'adopt'
           java-version: '21'
+      - name: Make gradlew executable
+        run: chmod +x gradlew
       - name: Run Tests
         run: ./gradlew test
 
